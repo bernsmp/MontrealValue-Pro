@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import GooglePlacesAutocomplete from "@/components/GooglePlacesAutocomplete";
+import MunicipalValueStep from "@/components/MunicipalValueStep";
 import { 
   MapPin, 
   Home, 
@@ -23,10 +24,11 @@ export default function Application() {
     placeId: "",
     coordinates: { lat: 0, lng: 0 },
     municipalValue: "",
+    lotSize: "",
+    yearBuilt: "",
     bedrooms: "",
     bathrooms: "",
     squareFeet: "",
-    yearBuilt: "",
     condition: "good"
   });
 
@@ -95,7 +97,7 @@ export default function Application() {
             <p className="text-sm text-gray-600">
               Step {step} of 4: {
                 step === 1 ? 'Property Address' :
-                step === 2 ? 'Property Details' :
+                step === 2 ? 'Municipal Value Capture' :
                 step === 3 ? 'Condition Assessment' :
                 'Valuation Results'
               }
@@ -141,68 +143,10 @@ export default function Application() {
             )}
 
             {step === 2 && (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <Home className="h-12 w-12 text-green-600 mx-auto mb-4" />
-                  <h2 className="text-2xl font-semibold mb-2">Property Details</h2>
-                  <p className="text-gray-600">
-                    Provide basic property information for accurate valuation
-                  </p>
-                </div>
-                
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="municipalValue">Municipal Assessment Value</Label>
-                    <Input
-                      id="municipalValue"
-                      type="number"
-                      placeholder="450000"
-                      value={propertyData.municipalValue}
-                      onChange={(e) => handleInputChange('municipalValue', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="bedrooms">Bedrooms</Label>
-                    <Input
-                      id="bedrooms"
-                      type="number"
-                      placeholder="3"
-                      value={propertyData.bedrooms}
-                      onChange={(e) => handleInputChange('bedrooms', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="bathrooms">Bathrooms</Label>
-                    <Input
-                      id="bathrooms"
-                      type="number"
-                      placeholder="2"
-                      value={propertyData.bathrooms}
-                      onChange={(e) => handleInputChange('bathrooms', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="squareFeet">Square Feet</Label>
-                    <Input
-                      id="squareFeet"
-                      type="number"
-                      placeholder="1200"
-                      value={propertyData.squareFeet}
-                      onChange={(e) => handleInputChange('squareFeet', e.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="yearBuilt">Year Built</Label>
-                    <Input
-                      id="yearBuilt"
-                      type="number"
-                      placeholder="1995"
-                      value={propertyData.yearBuilt}
-                      onChange={(e) => handleInputChange('yearBuilt', e.target.value)}
-                    />
-                  </div>
-                </div>
-              </div>
+              <MunicipalValueStep 
+                propertyData={propertyData}
+                onInputChange={handleInputChange}
+              />
             )}
 
             {step === 3 && (
