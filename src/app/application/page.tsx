@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import GooglePlacesAutocomplete from "@/components/GooglePlacesAutocomplete";
 import { 
   MapPin, 
   Home, 
@@ -19,6 +20,8 @@ export default function Application() {
   const [step, setStep] = useState(1);
   const [propertyData, setPropertyData] = useState({
     address: "",
+    placeId: "",
+    coordinates: { lat: 0, lng: 0 },
     municipalValue: "",
     bedrooms: "",
     bathrooms: "",
@@ -29,6 +32,19 @@ export default function Application() {
 
   const handleInputChange = (field: string, value: string) => {
     setPropertyData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handlePlaceSelect = (place: {
+    address: string;
+    placeId: string;
+    coordinates: { lat: number; lng: number };
+  }) => {
+    setPropertyData(prev => ({
+      ...prev,
+      address: place.address,
+      placeId: place.placeId,
+      coordinates: place.coordinates
+    }));
   };
 
   const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
@@ -101,15 +117,13 @@ export default function Application() {
                 </div>
                 
                 <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="address">Street Address</Label>
-                    <Input
-                      id="address"
-                      placeholder="1234 Rue Saint-Denis, Montreal, QC"
-                      value={propertyData.address}
-                      onChange={(e) => handleInputChange('address', e.target.value)}
-                    />
-                  </div>
+                  <GooglePlacesAutocomplete
+                    value={propertyData.address}
+                    onChange={(value) => handleInputChange('address', value)}
+                    onPlaceSelect={handlePlaceSelect}
+                    placeholder="1234 Rue Saint-Denis, Montreal, QC"
+                    label="Street Address"
+                  />
                   
                   <div className="bg-blue-50 p-4 rounded-lg">
                     <div className="flex items-start gap-3">
