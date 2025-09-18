@@ -85,7 +85,7 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
                 Data already captured
               </p>
               <p className="text-sm text-green-700">
-                You've already entered property data. Upload a new PDF to update.
+                You&apos;ve already entered property data. Upload a new PDF to update.
               </p>
             </div>
           </div>
@@ -136,11 +136,11 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
             <div className="space-y-3 mb-4">
               <div className="flex items-center gap-2 text-sm">
                 <ChevronRight className="h-4 w-4 text-gray-400" />
-                <span>Select <strong>"Par adresse"</strong> option</span>
+                <span>Select <strong>&quot;Par adresse&quot;</strong> option</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <ChevronRight className="h-4 w-4 text-gray-400" />
-                <span>Click <strong>"Suivant"</strong> button</span>
+                <span>Click <strong>&quot;Suivant&quot;</strong> button</span>
               </div>
               <div className="flex items-center gap-2 text-sm">
                 <ChevronRight className="h-4 w-4 text-gray-400" />
@@ -154,14 +154,14 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
                 <div>
                   <strong>Option A:</strong> Copy values directly from the webpage
                   <div className="text-gray-600 ml-4">
-                    • Look for <strong>"Section 4: Valeurs au rôle d'évaluation"</strong><br/>
-                    • Find <strong>"Valeur de l'immeuble"</strong> (Property Value)
+                    • Look for <strong>&quot;Section 4: Valeurs au rôle d&apos;évaluation&quot;</strong><br/>
+                    • Find <strong>&quot;Valeur de l&apos;immeuble&quot;</strong> (Property Value)
                   </div>
                 </div>
                 <div>
                   <strong>Option B:</strong> Download PDF
                   <div className="text-gray-600 ml-4">
-                    • Click <strong>"Version imprimable"</strong> button for PDF
+                    • Click <strong>&quot;Version imprimable&quot;</strong> button for PDF
                   </div>
                 </div>
               </div>

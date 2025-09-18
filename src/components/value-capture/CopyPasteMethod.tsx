@@ -33,6 +33,7 @@ export default function CopyPasteMethod({ propertyData, onInputChange }: CopyPas
       setExtractedData({});
       setExtractionStatus("idle");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pastedText]);
 
   const extractValues = (text: string) => {
@@ -108,7 +109,7 @@ export default function CopyPasteMethod({ propertyData, onInputChange }: CopyPas
                 Data already captured
               </p>
               <p className="text-sm text-green-700">
-                You've already entered property data. Paste new data below to update.
+                You&apos;ve already entered property data. Paste new data below to update.
               </p>
             </div>
           </div>
@@ -125,8 +126,8 @@ export default function CopyPasteMethod({ propertyData, onInputChange }: CopyPas
             </p>
             <p className="text-sm text-blue-700">
               1. Navigate to your property on Montreal.ca<br/>
-              2. Select and copy the text from "Section 4: Valeurs au rôle d'évaluation"<br/>
-              3. Paste it below - we'll extract the values automatically
+              2. Select and copy the text from &quot;Section 4: Valeurs au rôle d&apos;évaluation&quot;<br/>
+              3. Paste it below - we&apos;ll extract the values automatically
             </p>
           </div>
         </div>
@@ -142,9 +143,9 @@ export default function CopyPasteMethod({ propertyData, onInputChange }: CopyPas
           id="pasteArea"
           className="w-full min-h-[200px] p-4 border border-gray-300 rounded-lg font-mono text-sm transition-all focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 focus:outline-none"
           placeholder={`Example format:
-Section 4: Valeurs au rôle d'évaluation
+Section 4: Valeurs au rôle d&apos;évaluation
 
-Valeur de l'immeuble : 1 022 400 $
+Valeur de l&apos;immeuble : 1 022 400 $
 Valeur du terrain : 402 900 $
 
 Année de construction : 1965

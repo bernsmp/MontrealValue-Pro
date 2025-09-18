@@ -34,7 +34,7 @@ export function generateComparables(
     { offset: 200, priceVariation: 1.08 }
   ];
   
-  offsets.forEach((item, index) => {
+  offsets.forEach((item) => {
     const newStreetNumber = Math.max(1, baseStreetNumber + item.offset);
     const price = Math.round(calculatedValue * item.priceVariation);
     

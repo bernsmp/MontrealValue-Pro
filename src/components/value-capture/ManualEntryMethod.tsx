@@ -54,7 +54,7 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
               Enter values from Montreal.ca assessment
             </p>
             <p className="text-sm text-blue-700">
-              Look for "Section 4: Valeurs au rôle d'évaluation" on the webpage or PDF
+              Look for &quot;Section 4: Valeurs au rôle d&apos;évaluation&quot; on the webpage or PDF
             </p>
           </div>
         </div>
@@ -64,7 +64,7 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
         {/* Property Value - Required */}
         <div>
           <Label htmlFor="municipalValue" className="flex items-center gap-1">
-            Valeur de l'immeuble / Property Value
+            Valeur de l&apos;immeuble / Property Value
             <span className="text-red-500">*</span>
           </Label>
           <Input
@@ -148,7 +148,7 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
       <div className="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
         <h4 className="font-medium text-gray-900 mb-2">Where to find these values:</h4>
         <div className="space-y-2 text-sm text-gray-600">
-          <div>• <strong>Valeur de l'immeuble:</strong> Main value in Section 4</div>
+          <div>• <strong>Valeur de l&apos;immeuble:</strong> Main value in Section 4</div>
           <div>• <strong>Valeur du terrain:</strong> Listed separately under property value</div>
           <div>• <strong>Année de construction:</strong> In property characteristics section</div>
           <div>• <strong>Superficie du terrain:</strong> Listed in square meters (convert to sq ft)</div>

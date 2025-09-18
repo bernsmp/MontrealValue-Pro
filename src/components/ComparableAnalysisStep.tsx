@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { TrendingUp, MapPin, Home, DollarSign, Calendar, Bed, Bath } from "lucide-react";
+import { TrendingUp, MapPin, Home, Bed, Bath } from "lucide-react";
 import { generateComparables, calculateMarketMetrics } from "@/lib/comparables";
 
 interface ComparableAnalysisStepProps {
@@ -47,6 +47,7 @@ export default function ComparableAnalysisStep({ propertyData }: ComparableAnaly
     
     setComparables(generatedComps);
     setMetrics(calculateMarketMetrics(generatedComps, adjustedValue));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [propertyData]);
   
   const adjustedValue = calculateAdjustedValue();

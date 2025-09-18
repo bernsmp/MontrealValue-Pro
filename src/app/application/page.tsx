@@ -103,7 +103,6 @@ export default function Application() {
                 const Icon = stepItem.icon;
                 const isCompleted = step > stepItem.num;
                 const isCurrent = step === stepItem.num;
-                const isUpcoming = step < stepItem.num;
                 
                 return (
                   <div key={stepItem.num} className="flex items-center">
