@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import GooglePlacesAutocomplete from "@/components/GooglePlacesAutocomplete";
 import MunicipalValueStep from "@/components/MunicipalValueStep";
 import PropertyConditionStep from "@/components/PropertyConditionStep";
+import ComparableAnalysisStep from "@/components/ComparableAnalysisStep";
 import { isPropertyDataValid } from "@/lib/validation";
 import { 
   MapPin, 
@@ -53,7 +54,7 @@ export default function Application() {
     }));
   };
 
-  const nextStep = () => setStep(prev => Math.min(prev + 1, 4));
+  const nextStep = () => setStep(prev => Math.min(prev + 1, 5));
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
 
   const calculateValue = () => {
@@ -91,7 +92,7 @@ export default function Application() {
         {/* Progress Indicator */}
         <div className="mb-8">
           <div className="flex items-center justify-center space-x-4">
-            {[1, 2, 3, 4].map((stepNum) => (
+            {[1, 2, 3, 4, 5].map((stepNum) => (
               <div key={stepNum} className="flex items-center">
                 <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                   step >= stepNum 
@@ -100,7 +101,7 @@ export default function Application() {
                 }`}>
                   {stepNum}
                 </div>
-                {stepNum < 4 && (
+                {stepNum < 5 && (
                   <div className={`w-12 h-1 mx-2 ${
                     step > stepNum ? 'bg-blue-600' : 'bg-gray-200'
                   }`} />
@@ -110,10 +111,11 @@ export default function Application() {
           </div>
           <div className="flex justify-center mt-2">
             <p className="text-sm text-gray-600">
-              Step {step} of 4: {
+              Step {step} of 5: {
                 step === 1 ? 'Property Address' :
                 step === 2 ? 'Municipal Value Capture' :
                 step === 3 ? 'Condition Assessment' :
+                step === 4 ? 'Market Analysis' :
                 'Valuation Results'
               }
             </p>
@@ -172,6 +174,12 @@ export default function Application() {
             )}
 
             {step === 4 && (
+              <ComparableAnalysisStep 
+                propertyData={propertyData}
+              />
+            )}
+
+            {step === 5 && (
               <div className="space-y-6">
                 <div className="text-center">
                   <BarChart3 className="h-12 w-12 text-orange-600 mx-auto mb-4" />
@@ -243,7 +251,7 @@ export default function Application() {
             Previous
           </Button>
           
-          {step < 4 ? (
+          {step < 5 ? (
             <div className="flex items-center gap-2">
               {step === 2 && !isPropertyDataValid(propertyData) && propertyData.municipalValue !== "" && (
                 <p className="text-sm text-red-600">Please fix validation errors</p>

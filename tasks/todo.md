@@ -51,8 +51,17 @@
 - [ ] Ensure smooth transitions between methods
 - [ ] Keep extracted data when switching methods
 
+## Future Enhancements
+- [ ] Integrate real Montreal assessment roll PDFs for comparable properties
+  - Parse multiple assessment PDFs from same neighborhood
+  - Extract real property addresses and values
+  - Store in database for accurate comparables
+  - Replace simulated data with actual assessment data
+
 ## Completed Tasks
-(None yet)
+✅ All Phase 1-5 tasks completed
+✅ Step 3: Property Condition Assessment with valuation logic
+✅ Step 4: Comparable Market Analysis with simulated data
 
 ## Task Planning Details
 
