@@ -201,16 +201,6 @@ Superficie du terrain : 483.1 m²`}
         </div>
       )}
 
-      {/* Current Form Values (for testing) */}
-      <div className="bg-blue-50 p-3 rounded-lg text-sm">
-        <p className="text-blue-800 font-medium mb-1">Current Form Values:</p>
-        <div className="grid grid-cols-2 gap-2 text-blue-700">
-          <div>Property: {propertyData.municipalValue ? formatCurrency(propertyData.municipalValue) : "Not set"}</div>
-          <div>Land: {propertyData.landValue ? formatCurrency(propertyData.landValue) : "Not set"}</div>
-          <div>Year: {propertyData.yearBuilt || "Not set"}</div>
-          <div>Lot: {propertyData.lotSize ? parseInt(propertyData.lotSize).toLocaleString() + " sq ft" : "Not set"}</div>
-        </div>
-      </div>
     </div>
   );
 }

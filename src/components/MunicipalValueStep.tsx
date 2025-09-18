@@ -94,34 +94,6 @@ export default function MunicipalValueStep({ propertyData, onInputChange }: Muni
         )}
       </div>
 
-      {/* Temporary display of current values */}
-      <div className="bg-blue-50 p-4 rounded-lg">
-        <p className="text-sm text-blue-800 mb-2">Current Values (for testing):</p>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <span className="text-blue-700">Property Value:</span>
-            <span className="ml-2 font-medium">
-              {propertyData.municipalValue ? '$' + parseInt(propertyData.municipalValue).toLocaleString() : "Not set"}
-            </span>
-          </div>
-          <div>
-            <span className="text-blue-700">Land Value:</span>
-            <span className="ml-2 font-medium">
-              {propertyData.landValue ? '$' + parseInt(propertyData.landValue).toLocaleString() : "Not set"}
-            </span>
-          </div>
-          <div>
-            <span className="text-blue-700">Lot Size:</span>
-            <span className="ml-2 font-medium">
-              {propertyData.lotSize ? parseInt(propertyData.lotSize).toLocaleString() + ' sq ft' : "Not set"}
-            </span>
-          </div>
-          <div>
-            <span className="text-blue-700">Year Built:</span>
-            <span className="ml-2 font-medium">{propertyData.yearBuilt || "Not set"}</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
