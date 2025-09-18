@@ -31,6 +31,7 @@ export const getPlacesAutocomplete = async (input: string) => {
           componentRestrictions: { country: 'ca' }, // Restrict to Canada
           types: ['address'] // Only return addresses
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (predictions: any, status: any) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
             resolve(predictions);
