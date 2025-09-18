@@ -18,6 +18,7 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
   const [copied, setCopied] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isParsing, setIsParsing] = useState(false);
   
   const hasExistingData = propertyData?.municipalValue || propertyData?.landValue || 
                          propertyData?.lotSize || propertyData?.yearBuilt;
@@ -48,22 +49,52 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
     }
   };
 
-  const handleFile = (file: File) => {
+  const handleFile = async (file: File) => {
     if (file.type === "application/pdf") {
       setUploadedFile(file);
       if (onFileUpload) onFileUpload(file);
       
-      // Simulate data extraction (placeholder)
-      setTimeout(() => {
-        if (onDataExtracted) {
-          onDataExtracted({
-            municipalValue: "525000",
-            landValue: "185000",
-            lotSize: "4500",
-            yearBuilt: "1998"
-          });
+      // Parse the PDF using our API route
+      setIsParsing(true);
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const response = await fetch('/api/parse-pdf', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          // Extract the parsed data
+          if (onDataExtracted) {
+            onDataExtracted({
+              municipalValue: result.data.municipalValue || '',
+              landValue: result.data.landValue || '',
+              lotSize: result.data.lotSize || '',
+              yearBuilt: result.data.yearBuilt || ''
+            });
+          }
+          
+          // Log for debugging
+          console.log('Extracted PDF data:', result.data);
+          if (result.rawText) {
+            console.log('PDF text preview:', result.rawText);
+          }
+        } else {
+          console.error('PDF parsing failed:', result.error);
+          alert('Unable to extract data from PDF. Please try manual entry.');
         }
-      }, 1500);
+      } catch (error) {
+        console.error('Error parsing PDF:', error);
+        alert('Error processing PDF. Please try manual entry.');
+      } finally {
+        setIsParsing(false);
+      }
+    } else {
+      alert('Please upload a PDF file');
     }
   };
 
@@ -214,12 +245,18 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
               
-              {uploadedFile ? (
+              {isParsing ? (
+                <div className="space-y-2">
+                  <div className="animate-spin h-10 w-10 border-4 border-blue-600 border-t-transparent rounded-full mx-auto" />
+                  <p className="text-sm font-medium text-gray-900">Processing PDF...</p>
+                  <p className="text-xs text-gray-500">Extracting property values from Montreal.ca assessment</p>
+                </div>
+              ) : uploadedFile ? (
                 <div className="space-y-2">
                   <CheckCircle className="h-10 w-10 text-green-600 mx-auto" />
-                  <p className="text-sm font-medium text-gray-900">PDF Uploaded Successfully!</p>
+                  <p className="text-sm font-medium text-gray-900">PDF Processed Successfully!</p>
                   <p className="text-sm text-gray-600">{uploadedFile.name}</p>
-                  <p className="text-xs text-gray-500">Extracting property values...</p>
+                  <p className="text-xs text-gray-500">Values extracted and populated in form</p>
                 </div>
               ) : (
                 <div className="space-y-2">
