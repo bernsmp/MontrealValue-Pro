@@ -47,18 +47,29 @@ export async function POST(request: NextRequest) {
     
     // Extract Lot Size (Superficie)
     // Look for m² and convert to sq ft (1 m² = 10.764 sq ft)
+    // Format 1: Superficie : 671,5 m²
     const lotSizeMatch = text.match(/Superficie\s*:\s*([\d\s,]+(?:\.\d+)?)\s*m²/i);
     if (lotSizeMatch) {
-      const squareMeters = parseFloat(lotSizeMatch[1].replace(/[\s,]/g, ''));
+      const squareMeters = parseFloat(lotSizeMatch[1].replace(/\s/g, '').replace(',', '.'));
       const squareFeet = Math.round(squareMeters * 10.764);
       extractedData.lotSize = squareFeet.toString();
     }
     
-    // Also try alternate format for lot size
+    // Format 2: Superficie : 671,5 m\n2 (with line break)
     if (!extractedData.lotSize) {
-      const altLotSizeMatch = text.match(/Superficie\s+du\s+terrain\s*:\s*([\d\s,]+(?:\.\d+)?)\s*m²/i);
+      const altLotSizeMatch = text.match(/Superficie\s*:\s*([\d\s,]+(?:\.\d+)?)\s*m\s*\n\s*2/i);
       if (altLotSizeMatch) {
-        const squareMeters = parseFloat(altLotSizeMatch[1].replace(/[\s,]/g, ''));
+        const squareMeters = parseFloat(altLotSizeMatch[1].replace(/\s/g, '').replace(',', '.'));
+        const squareFeet = Math.round(squareMeters * 10.764);
+        extractedData.lotSize = squareFeet.toString();
+      }
+    }
+    
+    // Format 3: Superficie du terrain
+    if (!extractedData.lotSize) {
+      const altLotSizeMatch2 = text.match(/Superficie\s+du\s+terrain\s*:\s*([\d\s,]+(?:\.\d+)?)\s*m²/i);
+      if (altLotSizeMatch2) {
+        const squareMeters = parseFloat(altLotSizeMatch2[1].replace(/\s/g, '').replace(',', '.'));
         const squareFeet = Math.round(squareMeters * 10.764);
         extractedData.lotSize = squareFeet.toString();
       }
