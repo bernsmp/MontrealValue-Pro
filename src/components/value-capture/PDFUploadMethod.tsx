@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Copy, FileUp, CheckCircle, ChevronRight } from "lucide-react";
+import * as pdfjsLib from 'pdfjs-dist';
 
 interface PDFUploadMethodProps {
   propertyAddress: string;
@@ -22,6 +23,11 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
   
   const hasExistingData = propertyData?.municipalValue || propertyData?.landValue || 
                          propertyData?.lotSize || propertyData?.yearBuilt;
+  
+  // Set up PDF.js worker
+  useEffect(() => {
+    pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+  }, []);
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(propertyAddress);
@@ -54,39 +60,66 @@ export default function PDFUploadMethod({ propertyAddress, propertyData, onFileU
       setUploadedFile(file);
       if (onFileUpload) onFileUpload(file);
       
-      // Parse the PDF using our API route
+      // Parse the PDF client-side
       setIsParsing(true);
       try {
-        const formData = new FormData();
-        formData.append('file', file);
+        const arrayBuffer = await file.arrayBuffer();
+        const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
         
-        const response = await fetch('/api/parse-pdf', {
-          method: 'POST',
-          body: formData
-        });
+        let fullText = '';
         
-        const result = await response.json();
-        
-        if (result.success && result.data) {
-          // Extract the parsed data
-          if (onDataExtracted) {
-            onDataExtracted({
-              municipalValue: result.data.municipalValue || '',
-              landValue: result.data.landValue || '',
-              lotSize: result.data.lotSize || '',
-              yearBuilt: result.data.yearBuilt || ''
-            });
-          }
-          
-          // Log for debugging
-          console.log('Extracted PDF data:', result.data);
-          if (result.rawText) {
-            console.log('PDF text preview:', result.rawText);
-          }
-        } else {
-          console.error('PDF parsing failed:', result.error);
-          alert('Unable to extract data from PDF. Please try manual entry.');
+        // Extract text from all pages
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page = await pdf.getPage(i);
+          const textContent = await page.getTextContent();
+          const pageText = textContent.items.map((item: any) => item.str).join(' ');
+          fullText += pageText + ' ';
         }
+        
+        // Extract values from text
+        const extractedData = {
+          municipalValue: '',
+          landValue: '',
+          yearBuilt: '',
+          lotSize: ''
+        };
+        
+        // Extract Property Value (Valeur de l'immeuble)
+        const propertyValueMatch = fullText.match(/Valeur\s+de\s+l['']immeuble\s*:\s*\$?\s*([\d\s,]+)/i);
+        if (propertyValueMatch) {
+          extractedData.municipalValue = propertyValueMatch[1].replace(/[\s,]/g, '');
+        }
+        
+        // Extract Land Value (Valeur du terrain)
+        const landValueMatch = fullText.match(/Valeur\s+du\s+terrain\s*:\s*\$?\s*([\d\s,]+)/i);
+        if (landValueMatch) {
+          extractedData.landValue = landValueMatch[1].replace(/[\s,]/g, '');
+        }
+        
+        // Extract Year Built (Année de construction)
+        const yearBuiltMatch = fullText.match(/Année\s+de\s+construction\s*:\s*(\d{4})/i);
+        if (yearBuiltMatch) {
+          extractedData.yearBuilt = yearBuiltMatch[1];
+        }
+        
+        // Extract Lot Size (Superficie) - handle line breaks
+        let lotSizeMatch = fullText.match(/Superficie\s*:\s*([\d\s,]+(?:\.\d+)?)\s*m²/i);
+        if (!lotSizeMatch) {
+          lotSizeMatch = fullText.match(/Superficie\s*:\s*([\d\s,]+(?:\.\d+)?)\s*m\s*2/i);
+        }
+        if (lotSizeMatch) {
+          const squareMeters = parseFloat(lotSizeMatch[1].replace(/\s/g, '').replace(',', '.'));
+          const squareFeet = Math.round(squareMeters * 10.764);
+          extractedData.lotSize = squareFeet.toString();
+        }
+        
+        if (onDataExtracted) {
+          onDataExtracted(extractedData);
+        }
+        
+        console.log('Extracted PDF data:', extractedData);
+        console.log('PDF text preview:', fullText.substring(0, 500));
+        
       } catch (error) {
         console.error('Error parsing PDF:', error);
         alert('Error processing PDF. Please try manual entry.');
