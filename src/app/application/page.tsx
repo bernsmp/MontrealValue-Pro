@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import GooglePlacesAutocomplete from "@/components/GooglePlacesAutocomplete";
 import MunicipalValueStep from "@/components/MunicipalValueStep";
 import PropertyConditionStep from "@/components/PropertyConditionStep";
+import { isPropertyDataValid } from "@/lib/validation";
 import { 
   MapPin, 
   FileText, 
@@ -243,9 +244,17 @@ export default function Application() {
           </Button>
           
           {step < 4 ? (
-            <Button onClick={nextStep}>
-              Next Step
-            </Button>
+            <div className="flex items-center gap-2">
+              {step === 2 && !isPropertyDataValid(propertyData) && propertyData.municipalValue !== "" && (
+                <p className="text-sm text-red-600">Please fix validation errors</p>
+              )}
+              <Button 
+                onClick={nextStep}
+                disabled={step === 2 && !isPropertyDataValid(propertyData)}
+              >
+                Next Step
+              </Button>
+            </div>
           ) : (
             <Button onClick={() => setStep(1)}>
               Start New Valuation

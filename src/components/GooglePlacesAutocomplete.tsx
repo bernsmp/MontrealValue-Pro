@@ -83,7 +83,7 @@ export default function GooglePlacesAutocomplete({
       setError(null);
       
       // Get coordinates for the selected place
-      const geocodeResult = await geocodeAddress(prediction.description);
+      const geocodeResult = await geocodeAddress(prediction.description) as { lat: number; lng: number };
       
       onPlaceSelect({
         address: prediction.description,

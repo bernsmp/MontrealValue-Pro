@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { FileText, FileUp, Edit, Copy } from "lucide-react";
+import { FileText, FileUp, Edit, Copy, AlertCircle } from "lucide-react";
 import PDFUploadMethod from "@/components/value-capture/PDFUploadMethod";
 import ManualEntryMethod from "@/components/value-capture/ManualEntryMethod";
 import CopyPasteMethod from "@/components/value-capture/CopyPasteMethod";
+import { validatePropertyData, isPropertyDataValid } from "@/lib/validation";
 
 interface MunicipalValueStepProps {
   propertyData: {
@@ -17,6 +18,10 @@ interface MunicipalValueStepProps {
 
 export default function MunicipalValueStep({ propertyData, onInputChange }: MunicipalValueStepProps) {
   const [captureMethod, setCaptureMethod] = useState<"pdf" | "manual" | "paste">("pdf");
+  
+  const validation = validatePropertyData(propertyData);
+  const isValid = isPropertyDataValid(propertyData);
+  const hasErrors = !isValid && propertyData.municipalValue !== "";
 
   return (
     <div className="space-y-6">
@@ -93,6 +98,27 @@ export default function MunicipalValueStep({ propertyData, onInputChange }: Muni
           />
         )}
       </div>
+
+      {/* Validation Errors */}
+      {hasErrors && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
+            <div className="space-y-1">
+              <p className="text-sm font-medium text-red-800">Please correct the following:</p>
+              {validation.municipalValue && (
+                <p className="text-sm text-red-700">• {validation.municipalValue}</p>
+              )}
+              {validation.lotSize && (
+                <p className="text-sm text-red-700">• {validation.lotSize}</p>
+              )}
+              {validation.yearBuilt && (
+                <p className="text-sm text-red-700">• {validation.yearBuilt}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   );

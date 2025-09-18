@@ -35,12 +35,15 @@
 - [x] Real-time extraction as user types/pastes
 - [x] Visual feedback for success, partial, or error states
 
-### Phase 5: Validation & Integration
-- [ ] Validate Municipal Value is numeric and reasonable (100k-10M)
-- [ ] Validate Lot Size is numeric (100-50000 sq ft)
-- [ ] Validate Year Built is between 1800-current year
-- [ ] Add error messages for invalid inputs
-- [ ] Enable "Continue" button only when all fields valid
+### Phase 5: Validation & Integration ✅
+- [x] Validate Municipal Value is numeric and reasonable (100k-10M)
+- [x] Validate Lot Size is numeric (100-50000 sq ft)
+- [x] Validate Year Built is between 1800-current year
+- [x] Add error messages for invalid inputs
+- [x] Enable "Continue" button only when all fields valid
+- [x] Add visual feedback (red borders) for invalid fields
+- [x] Show validation errors in MunicipalValueStep component
+- [x] Disable "Next Step" button until required fields are valid
 
 ### Phase 6: UI Polish
 - [ ] Style method selection tabs/buttons

@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Info } from "lucide-react";
+import { validatePropertyData } from "@/lib/validation";
 
 interface ManualEntryMethodProps {
   propertyData: {
@@ -13,6 +14,8 @@ interface ManualEntryMethodProps {
 }
 
 export default function ManualEntryMethod({ propertyData, onInputChange }: ManualEntryMethodProps) {
+  const validation = validatePropertyData(propertyData);
+  
   const formatCurrency = (value: string) => {
     // Remove all non-numeric characters
     const numbers = value.replace(/[^0-9]/g, '');
@@ -69,9 +72,13 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
             placeholder="$1,022,400"
             value={propertyData.municipalValue ? formatCurrency(propertyData.municipalValue) : ''}
             onChange={(e) => handleCurrencyInput('municipalValue', e.target.value)}
-            className="mt-1"
+            className={`mt-1 ${validation.municipalValue && propertyData.municipalValue ? 'border-red-500 focus:ring-red-500' : ''}`}
           />
-          <p className="text-xs text-gray-500 mt-1">Required - Total property value</p>
+          {validation.municipalValue && propertyData.municipalValue ? (
+            <p className="text-xs text-red-500 mt-1">{validation.municipalValue}</p>
+          ) : (
+            <p className="text-xs text-gray-500 mt-1">Required - Total property value</p>
+          )}
         </div>
 
         {/* Land Value - Optional */}
@@ -102,9 +109,13 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
             value={propertyData.yearBuilt}
             onChange={(e) => handleYearInput(e.target.value)}
             maxLength={4}
-            className="mt-1"
+            className={`mt-1 ${validation.yearBuilt && propertyData.yearBuilt ? 'border-red-500 focus:ring-red-500' : ''}`}
           />
-          <p className="text-xs text-gray-500 mt-1">4-digit year</p>
+          {validation.yearBuilt && propertyData.yearBuilt ? (
+            <p className="text-xs text-red-500 mt-1">{validation.yearBuilt}</p>
+          ) : (
+            <p className="text-xs text-gray-500 mt-1">4-digit year</p>
+          )}
         </div>
 
         {/* Lot Size - Optional */}
@@ -119,13 +130,17 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
               placeholder="5,200"
               value={propertyData.lotSize ? parseInt(propertyData.lotSize).toLocaleString() : ''}
               onChange={(e) => handleLotSizeInput(e.target.value)}
-              className="mt-1 pr-12"
+              className={`mt-1 pr-12 ${validation.lotSize && propertyData.lotSize ? 'border-red-500 focus:ring-red-500' : ''}`}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 mt-1">
               sq ft
             </span>
           </div>
-          <p className="text-xs text-gray-500 mt-1">Square feet</p>
+          {validation.lotSize && propertyData.lotSize ? (
+            <p className="text-xs text-red-500 mt-1">{validation.lotSize}</p>
+          ) : (
+            <p className="text-xs text-gray-500 mt-1">Square feet</p>
+          )}
         </div>
       </div>
 
