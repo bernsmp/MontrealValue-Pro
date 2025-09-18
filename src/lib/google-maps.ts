@@ -54,7 +54,8 @@ export const geocodeAddress = async (address: string) => {
     const geocoder = new google.maps.Geocoder();
     
     return new Promise((resolve, reject) => {
-      geocoder.geocode({ address }, (results, status) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      geocoder.geocode({ address }, (results: any, status: any) => {
         if (status === 'OK' && results && results[0]) {
           const location = results[0].geometry.location;
           resolve({
