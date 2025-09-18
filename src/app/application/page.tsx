@@ -250,11 +250,24 @@ export default function Application() {
                 </div>
                 
                 <div className="flex gap-4">
-                  <Button className="flex-1">
+                  <Button 
+                    className="flex-1"
+                    onClick={() => {
+                      // For now, show alert. Later: generate actual PDF
+                      alert('PDF Report feature coming soon! This will generate a professional valuation report.');
+                    }}
+                  >
                     <FileText className="mr-2 h-4 w-4" />
                     Download PDF Report
                   </Button>
-                  <Button variant="outline" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    className="flex-1"
+                    onClick={() => {
+                      // Go back to step 4 to view comparables
+                      setStep(4);
+                    }}
+                  >
                     <BarChart3 className="mr-2 h-4 w-4" />
                     View Market Analysis
                   </Button>

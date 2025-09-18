@@ -55,6 +55,19 @@
 - [x] Improve form inputs with focus states, transitions, and hover effects
 
 ## Future Enhancements
+- [ ] Transform Home Page into Lead Capture Landing Page
+  - Move valuation tool to home page (replace current placeholder)
+  - Add marketing/educational content sections:
+    - Hero section with value proposition
+    - How it works (3-step process)
+    - Benefits of professional valuation
+    - Trust indicators (testimonials, stats)
+    - FAQ section
+    - About MontrealValue Pro
+  - Integrate lead capture seamlessly into the flow
+  - Mobile-responsive marketing sections
+  - SEO optimization for Montreal real estate keywords
+  - Handle custom domain setup (ensure app loads on home page)
 - [ ] Lead Capture System (for lead generation)
   - Add email and phone number capture
   - Determine optimal placement (before results? after?)
