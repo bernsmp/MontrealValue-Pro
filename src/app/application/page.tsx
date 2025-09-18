@@ -3,13 +3,11 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import GooglePlacesAutocomplete from "@/components/GooglePlacesAutocomplete";
 import MunicipalValueStep from "@/components/MunicipalValueStep";
+import PropertyConditionStep from "@/components/PropertyConditionStep";
 import { 
   MapPin, 
-  Home, 
   FileText, 
   BarChart3, 
   Clock,
@@ -24,12 +22,17 @@ export default function Application() {
     placeId: "",
     coordinates: { lat: 0, lng: 0 },
     municipalValue: "",
+    landValue: "",
     lotSize: "",
     yearBuilt: "",
     bedrooms: "",
     bathrooms: "",
     squareFeet: "",
-    condition: "good"
+    roofAge: "",
+    windowsAge: "",
+    flooringType: "",
+    bathroomRenovated: "",
+    kitchenRenovated: ""
   });
 
   const handleInputChange = (field: string, value: string) => {
@@ -53,11 +56,22 @@ export default function Application() {
   const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
 
   const calculateValue = () => {
-    // Mock calculation - in real app this would use actual algorithms
     const baseValue = parseInt(propertyData.municipalValue) || 0;
-    const multiplier = propertyData.condition === "excellent" ? 1.2 : 
-                     propertyData.condition === "good" ? 1.0 : 0.8;
-    return Math.round(baseValue * multiplier);
+    
+    // Calculate adjustments (same logic as PropertyConditionStep)
+    const roofAdjustment = propertyData.roofAge === "less20" ? 15000 : propertyData.roofAge === "more20" ? -15000 : 0;
+    const windowsAdjustment = propertyData.windowsAge === "less20" ? 15000 : propertyData.windowsAge === "more20" ? -15000 : 0;
+    const flooringAdjustment = propertyData.flooringType === "hardwood" ? 20000 : 0;
+    
+    // Apply fixed adjustments first
+    const afterFixedAdjustments = baseValue + roofAdjustment + windowsAdjustment + flooringAdjustment;
+    
+    // Calculate percentage adjustments
+    const bathroomAdjustment = propertyData.bathroomRenovated === "yes" ? Math.round(baseValue * 0.03) : 0;
+    const kitchenAdjustment = propertyData.kitchenRenovated === "yes" ? Math.round(baseValue * 0.05) : 0;
+    
+    // Final value
+    return afterFixedAdjustments + bathroomAdjustment + kitchenAdjustment;
   };
 
   return (
@@ -150,43 +164,10 @@ export default function Application() {
             )}
 
             {step === 3 && (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <FileText className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-                  <h2 className="text-2xl font-semibold mb-2">Condition Assessment</h2>
-                  <p className="text-gray-600">
-                    Rate the condition of key property features
-                  </p>
-                </div>
-                
-                <div className="space-y-4">
-                  {[
-                    { name: 'Roof', description: 'Age and condition of roofing materials' },
-                    { name: 'Windows', description: 'Energy efficiency and overall condition' },
-                    { name: 'Kitchen', description: 'Appliances, cabinets, and finishes' },
-                    { name: 'Bathrooms', description: 'Fixtures, tiles, and overall condition' }
-                  ].map((feature) => (
-                    <div key={feature.name} className="border rounded-lg p-4">
-                      <div className="flex justify-between items-center mb-2">
-                        <h3 className="font-medium">{feature.name}</h3>
-                        <span className="text-sm text-gray-600">{feature.description}</span>
-                      </div>
-                      <div className="flex gap-2">
-                        {['poor', 'fair', 'good', 'excellent'].map((condition) => (
-                          <Button
-                            key={condition}
-                            variant={propertyData.condition === condition ? "default" : "outline"}
-                            size="sm"
-                            onClick={() => handleInputChange('condition', condition)}
-                          >
-                            {condition.charAt(0).toUpperCase() + condition.slice(1)}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              <PropertyConditionStep 
+                propertyData={propertyData}
+                onInputChange={handleInputChange}
+              />
             )}
 
             {step === 4 && (
@@ -201,10 +182,13 @@ export default function Application() {
                 
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg">
                   <div className="text-center mb-6">
-                    <div className="text-4xl font-bold text-blue-600 mb-2">
-                      ${calculateValue().toLocaleString()}
+                    <p className="text-sm text-gray-600 mb-2">Estimated Market Value Range (±8%)</p>
+                    <div className="text-3xl font-bold text-blue-600 mb-2">
+                      ${Math.round(calculateValue() * 0.92).toLocaleString()} - ${Math.round(calculateValue() * 1.08).toLocaleString()}
                     </div>
-                    <p className="text-gray-600">Estimated Property Value</p>
+                    <p className="text-lg text-gray-700">
+                      Adjusted Value: ${calculateValue().toLocaleString()}
+                    </p>
                   </div>
                   
                   <div className="grid md:grid-cols-2 gap-4 mb-6">

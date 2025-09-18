@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { FileText, FileUp, Edit, Copy } from "lucide-react";
+import PDFUploadMethod from "@/components/value-capture/PDFUploadMethod";
+import ManualEntryMethod from "@/components/value-capture/ManualEntryMethod";
+import CopyPasteMethod from "@/components/value-capture/CopyPasteMethod";
 
 interface MunicipalValueStepProps {
   propertyData: {
+    address: string;
     municipalValue: string;
+    landValue: string;
     lotSize: string;
     yearBuilt: string;
   };
@@ -63,38 +68,53 @@ export default function MunicipalValueStep({ propertyData, onInputChange }: Muni
       {/* Content based on method */}
       <div className="bg-gray-50 p-6 rounded-lg">
         {captureMethod === "pdf" && (
-          <div className="text-center">
-            <p className="text-gray-600 mb-4">PDF Upload feature coming in Phase 2</p>
-            <p className="text-sm text-gray-500">Drag and drop your Montreal.ca assessment PDF here</p>
-          </div>
+          <PDFUploadMethod 
+            propertyAddress={propertyData.address}
+            onDataExtracted={(data) => {
+              onInputChange("municipalValue", data.municipalValue);
+              onInputChange("landValue", data.landValue);
+              onInputChange("lotSize", data.lotSize);
+              onInputChange("yearBuilt", data.yearBuilt);
+            }}
+          />
         )}
 
         {captureMethod === "manual" && (
-          <div className="text-center">
-            <p className="text-gray-600 mb-4">Manual Entry feature coming in Phase 3</p>
-            <p className="text-sm text-gray-500">Enter values from your assessment document</p>
-          </div>
+          <ManualEntryMethod 
+            propertyData={propertyData}
+            onInputChange={onInputChange}
+          />
         )}
 
         {captureMethod === "paste" && (
-          <div className="text-center">
-            <p className="text-gray-600 mb-4">Copy/Paste feature coming in Phase 4</p>
-            <p className="text-sm text-gray-500">Paste text from Montreal.ca to extract values</p>
-          </div>
+          <CopyPasteMethod 
+            propertyData={propertyData}
+            onInputChange={onInputChange}
+          />
         )}
       </div>
 
       {/* Temporary display of current values */}
       <div className="bg-blue-50 p-4 rounded-lg">
         <p className="text-sm text-blue-800 mb-2">Current Values (for testing):</p>
-        <div className="grid grid-cols-3 gap-4 text-sm">
+        <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
-            <span className="text-blue-700">Municipal Value:</span>
-            <span className="ml-2 font-medium">{propertyData.municipalValue || "Not set"}</span>
+            <span className="text-blue-700">Property Value:</span>
+            <span className="ml-2 font-medium">
+              {propertyData.municipalValue ? '$' + parseInt(propertyData.municipalValue).toLocaleString() : "Not set"}
+            </span>
+          </div>
+          <div>
+            <span className="text-blue-700">Land Value:</span>
+            <span className="ml-2 font-medium">
+              {propertyData.landValue ? '$' + parseInt(propertyData.landValue).toLocaleString() : "Not set"}
+            </span>
           </div>
           <div>
             <span className="text-blue-700">Lot Size:</span>
-            <span className="ml-2 font-medium">{propertyData.lotSize || "Not set"}</span>
+            <span className="ml-2 font-medium">
+              {propertyData.lotSize ? parseInt(propertyData.lotSize).toLocaleString() + ' sq ft' : "Not set"}
+            </span>
           </div>
           <div>
             <span className="text-blue-700">Year Built:</span>
