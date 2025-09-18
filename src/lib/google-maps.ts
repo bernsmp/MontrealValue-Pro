@@ -89,7 +89,8 @@ export const getPlaceDetails = async (placeId: string) => {
           placeId,
           fields: ['name', 'formatted_address', 'geometry', 'address_components']
         },
-        (place, status) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (place: any, status: any) => {
           if (status === google.maps.places.PlacesServiceStatus.OK && place) {
             resolve(place);
           } else {
