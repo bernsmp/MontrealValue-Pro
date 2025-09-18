@@ -45,13 +45,25 @@
 - [x] Show validation errors in MunicipalValueStep component
 - [x] Disable "Next Step" button until required fields are valid
 
-### Phase 6: UI Polish
-- [ ] Style method selection tabs/buttons
-- [ ] Add icons for each method (FileUp, Edit, Copy)
-- [ ] Ensure smooth transitions between methods
-- [ ] Keep extracted data when switching methods
+### Phase 6: UI Polish ✅
+- [x] Add icons for each method (FileUp, Edit, Copy) - Already implemented
+- [x] Style method selection tabs/buttons with improved design using shadcn/ui Tabs
+- [x] Ensure smooth transitions between methods with fade animations
+- [x] Keep extracted data when switching methods with visual indicators
+- [x] Polish overall UI: consistent Card components, shadows, spacing
+- [x] Enhance step indicators with icons and better visual hierarchy
+- [x] Improve form inputs with focus states, transitions, and hover effects
 
 ## Future Enhancements
+- [ ] Lead Capture System (for lead generation)
+  - Add email and phone number capture
+  - Determine optimal placement (before results? after?)
+  - Consider progressive disclosure approach
+  - Store leads in database/CRM
+  - Email validation and formatting
+  - Optional vs required fields strategy
+  - Privacy policy and consent checkboxes
+  - Follow-up email automation
 - [ ] Integrate real Montreal assessment roll PDFs for comparable properties
   - Parse multiple assessment PDFs from same neighborhood
   - Extract real property addresses and values
@@ -85,15 +97,24 @@
 
 ## Review Section
 ### Summary of Changes
-- (To be filled after changes are made)
+- Implemented Phase 6 UI Polish with the following improvements:
+  - Replaced basic method selection buttons with shadcn/ui Tabs component
+  - Added smooth fade transitions between method tabs
+  - Implemented data persistence indicators when switching between capture methods
+  - Applied consistent Card components with shadows across all steps
+  - Enhanced step progress indicators with icons, colors, and completion states
+  - Improved form inputs with better focus states, hover effects, and transitions
+  - Added visual hierarchy with consistent spacing and background colors
+  - Polished all 5 steps with uniform styling
 
 ### New Dependencies Added
-- (To be filled after changes are made)
+- shadcn/ui Tabs component (installed via CLI)
 
 ### Environment Variables Needed
-- (To be filled after changes are made)
+- NEXT_PUBLIC_GOOGLE_MAPS_API_KEY (already in .env.local)
 
 ### Known Limitations/Future Improvements
 - PDF parsing is placeholder (real implementation needs pdf.js or similar)
 - No OCR for scanned PDFs yet
 - French/English language detection not implemented
+- Comparable properties use simulated data (future: integrate real Montreal assessment data)

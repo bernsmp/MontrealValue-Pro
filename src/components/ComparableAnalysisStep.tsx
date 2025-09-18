@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { TrendingUp, MapPin, Home, DollarSign, Calendar, Bed, Bath } from "lucide-react";
 import { generateComparables, calculateMarketMetrics } from "@/lib/comparables";
 
@@ -51,14 +52,17 @@ export default function ComparableAnalysisStep({ propertyData }: ComparableAnaly
   const adjustedValue = calculateAdjustedValue();
   
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <TrendingUp className="h-12 w-12 text-indigo-600 mx-auto mb-4" />
+    <Card className="shadow-lg border-gray-200">
+      <CardHeader className="text-center pb-6">
+        <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <TrendingUp className="h-8 w-8 text-indigo-600" />
+        </div>
         <h2 className="text-2xl font-semibold mb-2">Comparable Market Analysis</h2>
         <p className="text-gray-600">
           Recent sales and listings in your neighborhood
         </p>
-      </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
       
       {/* Comparable Properties */}
       <div className="space-y-3">
@@ -175,6 +179,7 @@ export default function ComparableAnalysisStep({ propertyData }: ComparableAnaly
           </div>
         </div>
       )}
-    </div>
+      </CardContent>
+    </Card>
   );
 }

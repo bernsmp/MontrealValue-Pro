@@ -4,14 +4,23 @@ import { ExternalLink, Copy, FileUp, CheckCircle, ChevronRight } from "lucide-re
 
 interface PDFUploadMethodProps {
   propertyAddress: string;
+  propertyData?: {
+    municipalValue: string;
+    landValue: string;
+    lotSize: string;
+    yearBuilt: string;
+  };
   onFileUpload?: (file: File) => void;
   onDataExtracted?: (data: { municipalValue: string; landValue: string; lotSize: string; yearBuilt: string }) => void;
 }
 
-export default function PDFUploadMethod({ propertyAddress, onFileUpload, onDataExtracted }: PDFUploadMethodProps) {
+export default function PDFUploadMethod({ propertyAddress, propertyData, onFileUpload, onDataExtracted }: PDFUploadMethodProps) {
   const [copied, setCopied] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  
+  const hasExistingData = propertyData?.municipalValue || propertyData?.landValue || 
+                         propertyData?.lotSize || propertyData?.yearBuilt;
 
   const handleCopyAddress = () => {
     navigator.clipboard.writeText(propertyAddress);
@@ -66,6 +75,23 @@ export default function PDFUploadMethod({ propertyAddress, onFileUpload, onDataE
 
   return (
     <div className="space-y-6">
+      {/* Show existing data banner if available */}
+      {hasExistingData && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <CheckCircle className="h-5 w-5 text-green-600 mt-0.5" />
+            <div>
+              <p className="text-sm text-green-800 font-medium mb-1">
+                Data already captured
+              </p>
+              <p className="text-sm text-green-700">
+                You've already entered property data. Upload a new PDF to update.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Step 1: Copy Address */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex items-start gap-4">

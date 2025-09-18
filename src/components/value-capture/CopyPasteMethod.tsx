@@ -21,6 +21,10 @@ export default function CopyPasteMethod({ propertyData, onInputChange }: CopyPas
     yearBuilt?: string;
   }>({});
   const [extractionStatus, setExtractionStatus] = useState<"idle" | "success" | "partial" | "error">("idle");
+  
+  // Check if we already have data
+  const hasExistingData = propertyData.municipalValue || propertyData.landValue || 
+                         propertyData.lotSize || propertyData.yearBuilt;
 
   useEffect(() => {
     if (pastedText) {
@@ -94,6 +98,23 @@ export default function CopyPasteMethod({ propertyData, onInputChange }: CopyPas
 
   return (
     <div className="space-y-4">
+      {/* Show existing data banner if available */}
+      {hasExistingData && (
+        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5" />
+            <div>
+              <p className="text-sm text-green-800 font-medium mb-1">
+                Data already captured
+              </p>
+              <p className="text-sm text-green-700">
+                You've already entered property data. Paste new data below to update.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* Instructions */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
         <div className="flex items-start gap-3">
@@ -119,7 +140,7 @@ export default function CopyPasteMethod({ propertyData, onInputChange }: CopyPas
         </Label>
         <textarea
           id="pasteArea"
-          className="w-full min-h-[200px] p-4 border border-gray-300 rounded-lg font-mono text-sm"
+          className="w-full min-h-[200px] p-4 border border-gray-300 rounded-lg font-mono text-sm transition-all focus:border-blue-500 focus:ring-1 focus:ring-blue-500/20 focus:outline-none"
           placeholder={`Example format:
 Section 4: Valeurs au rôle d'évaluation
 

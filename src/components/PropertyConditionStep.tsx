@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Home, Calculator } from "lucide-react";
 
 interface PropertyConditionStepProps {
@@ -35,25 +36,26 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
   const upperRange = Math.round(finalValue * 1.08);
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <Home className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+    <Card className="shadow-lg border-gray-200">
+      <CardHeader className="text-center pb-6">
+        <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Home className="h-8 w-8 text-purple-600" />
+        </div>
         <h2 className="text-2xl font-semibold mb-2">Property Condition Assessment</h2>
         <p className="text-gray-600">
           Answer these questions to refine your property valuation
         </p>
-      </div>
-
-      <div className="space-y-4">
+      </CardHeader>
+      <CardContent className="space-y-6">
         {/* Roof Age */}
-        <div className="border rounded-lg p-4">
+        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
           <Label className="text-base font-medium mb-3 block">Roof Age</Label>
           <div className="grid grid-cols-2 gap-3">
             <Button
               type="button"
               variant={propertyData.roofAge === "less20" ? "default" : "outline"}
               onClick={() => onInputChange("roofAge", "less20")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               Less than 20 years (+$15,000)
             </Button>
@@ -61,7 +63,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
               type="button"
               variant={propertyData.roofAge === "more20" ? "default" : "outline"}
               onClick={() => onInputChange("roofAge", "more20")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               More than 20 years (-$15,000)
             </Button>
@@ -69,14 +71,14 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
         </div>
 
         {/* Windows Age */}
-        <div className="border rounded-lg p-4">
+        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
           <Label className="text-base font-medium mb-3 block">Windows Age</Label>
           <div className="grid grid-cols-2 gap-3">
             <Button
               type="button"
               variant={propertyData.windowsAge === "less20" ? "default" : "outline"}
               onClick={() => onInputChange("windowsAge", "less20")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               Less than 20 years (+$15,000)
             </Button>
@@ -84,7 +86,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
               type="button"
               variant={propertyData.windowsAge === "more20" ? "default" : "outline"}
               onClick={() => onInputChange("windowsAge", "more20")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               More than 20 years (-$15,000)
             </Button>
@@ -92,14 +94,14 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
         </div>
 
         {/* Flooring Type */}
-        <div className="border rounded-lg p-4">
+        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
           <Label className="text-base font-medium mb-3 block">Primary Flooring Type</Label>
           <div className="grid grid-cols-2 gap-3">
             <Button
               type="button"
               variant={propertyData.flooringType === "hardwood" ? "default" : "outline"}
               onClick={() => onInputChange("flooringType", "hardwood")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               Hardwood/Ceramic (+$20,000)
             </Button>
@@ -107,7 +109,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
               type="button"
               variant={propertyData.flooringType === "other" ? "default" : "outline"}
               onClick={() => onInputChange("flooringType", "other")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               Other Types ($0)
             </Button>
@@ -115,7 +117,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
         </div>
 
         {/* Bathroom Renovation */}
-        <div className="border rounded-lg p-4">
+        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
           <Label className="text-base font-medium mb-3 block">
             Bathroom Renovation (last 10 years)
           </Label>
@@ -124,7 +126,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
               type="button"
               variant={propertyData.bathroomRenovated === "yes" ? "default" : "outline"}
               onClick={() => onInputChange("bathroomRenovated", "yes")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               Yes (+3% of base value)
             </Button>
@@ -132,7 +134,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
               type="button"
               variant={propertyData.bathroomRenovated === "no" ? "default" : "outline"}
               onClick={() => onInputChange("bathroomRenovated", "no")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               No (No change)
             </Button>
@@ -140,7 +142,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
         </div>
 
         {/* Kitchen Renovation */}
-        <div className="border rounded-lg p-4">
+        <div className="border border-gray-200 rounded-lg p-4 bg-gray-50/50">
           <Label className="text-base font-medium mb-3 block">
             Kitchen Renovation (last 10 years)
           </Label>
@@ -149,7 +151,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
               type="button"
               variant={propertyData.kitchenRenovated === "yes" ? "default" : "outline"}
               onClick={() => onInputChange("kitchenRenovated", "yes")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               Yes (+5% of base value)
             </Button>
@@ -157,13 +159,12 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
               type="button"
               variant={propertyData.kitchenRenovated === "no" ? "default" : "outline"}
               onClick={() => onInputChange("kitchenRenovated", "no")}
-              className="justify-start"
+              className="justify-start transition-all hover:scale-[1.02]"
             >
               No (No change)
             </Button>
           </div>
         </div>
-      </div>
 
       {/* Valuation Breakdown */}
       {baseValue > 0 && (
@@ -242,6 +243,7 @@ export default function PropertyConditionStep({ propertyData, onInputChange }: P
           </div>
         </div>
       )}
-    </div>
+      </CardContent>
+    </Card>
   );
 }

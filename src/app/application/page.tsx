@@ -91,49 +91,69 @@ export default function Application() {
 
         {/* Progress Indicator */}
         <div className="mb-8">
-          <div className="flex items-center justify-center space-x-4">
-            {[1, 2, 3, 4, 5].map((stepNum) => (
-              <div key={stepNum} className="flex items-center">
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                  step >= stepNum 
-                    ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-200 text-gray-600'
-                }`}>
-                  {stepNum}
-                </div>
-                {stepNum < 5 && (
-                  <div className={`w-12 h-1 mx-2 ${
-                    step > stepNum ? 'bg-blue-600' : 'bg-gray-200'
-                  }`} />
-                )}
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center mt-2">
-            <p className="text-sm text-gray-600">
-              Step {step} of 5: {
-                step === 1 ? 'Property Address' :
-                step === 2 ? 'Municipal Value Capture' :
-                step === 3 ? 'Condition Assessment' :
-                step === 4 ? 'Market Analysis' :
-                'Valuation Results'
-              }
-            </p>
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between max-w-3xl mx-auto">
+              {[
+                { num: 1, name: 'Address', icon: MapPin },
+                { num: 2, name: 'Municipal Value', icon: FileText },
+                { num: 3, name: 'Condition', icon: Clock },
+                { num: 4, name: 'Market Analysis', icon: BarChart3 },
+                { num: 5, name: 'Results', icon: CheckCircle }
+              ].map((stepItem, index) => {
+                const Icon = stepItem.icon;
+                const isCompleted = step > stepItem.num;
+                const isCurrent = step === stepItem.num;
+                const isUpcoming = step < stepItem.num;
+                
+                return (
+                  <div key={stepItem.num} className="flex items-center">
+                    <div className="relative">
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300 ${
+                        isCompleted ? 'bg-green-500 text-white' :
+                        isCurrent ? 'bg-blue-600 text-white ring-4 ring-blue-200' :
+                        'bg-gray-200 text-gray-500'
+                      }`}>
+                        {isCompleted ? (
+                          <CheckCircle className="h-6 w-6" />
+                        ) : (
+                          <Icon className="h-5 w-5" />
+                        )}
+                      </div>
+                      <div className="text-center mt-2">
+                        <p className={`text-xs font-medium ${
+                          isCurrent ? 'text-blue-600' :
+                          isCompleted ? 'text-green-600' :
+                          'text-gray-500'
+                        }`}>
+                          {stepItem.name}
+                        </p>
+                      </div>
+                    </div>
+                    {index < 4 && (
+                      <div className={`w-16 h-1 mx-2 transition-all duration-300 ${
+                        isCompleted ? 'bg-green-500' : 'bg-gray-200'
+                      }`} />
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <Card className="mb-8">
-          <CardContent className="p-8">
-            {step === 1 && (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-                  <h2 className="text-2xl font-semibold mb-2">Property Address</h2>
-                  <p className="text-gray-600">
-                    Enter your Montreal property address for accurate valuation
-                  </p>
-                </div>
+        {step === 1 && (
+          <Card className="shadow-lg border-gray-200 mb-8">
+            <CardHeader className="text-center pb-6">
+              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <MapPin className="h-8 w-8 text-blue-600" />
+              </div>
+              <h2 className="text-2xl font-semibold mb-2">Property Address</h2>
+              <p className="text-gray-600">
+                Enter your Montreal property address for accurate valuation
+              </p>
+            </CardHeader>
+            <CardContent className="p-8 space-y-6">
                 
                 <div className="space-y-4">
                   <GooglePlacesAutocomplete
@@ -156,38 +176,42 @@ export default function Application() {
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+            </CardContent>
+          </Card>
+        )}
 
             {step === 2 && (
-              <MunicipalValueStep 
-                propertyData={propertyData}
-                onInputChange={handleInputChange}
-              />
-            )}
+          <MunicipalValueStep 
+            propertyData={propertyData}
+            onInputChange={handleInputChange}
+          />
+        )}
 
-            {step === 3 && (
-              <PropertyConditionStep 
-                propertyData={propertyData}
-                onInputChange={handleInputChange}
-              />
-            )}
+        {step === 3 && (
+          <PropertyConditionStep 
+            propertyData={propertyData}
+            onInputChange={handleInputChange}
+          />
+        )}
 
-            {step === 4 && (
-              <ComparableAnalysisStep 
-                propertyData={propertyData}
-              />
-            )}
+        {step === 4 && (
+          <ComparableAnalysisStep 
+            propertyData={propertyData}
+          />
+        )}
 
             {step === 5 && (
-              <div className="space-y-6">
-                <div className="text-center">
-                  <BarChart3 className="h-12 w-12 text-orange-600 mx-auto mb-4" />
+              <Card className="shadow-lg border-gray-200">
+                <CardHeader className="text-center pb-6">
+                  <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BarChart3 className="h-8 w-8 text-orange-600" />
+                  </div>
                   <h2 className="text-2xl font-semibold mb-2">Valuation Results</h2>
                   <p className="text-gray-600">
                     Your professional property valuation report
                   </p>
-                </div>
+                </CardHeader>
+                <CardContent className="space-y-6">
                 
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-lg">
                   <div className="text-center mb-6">
@@ -236,10 +260,9 @@ export default function Application() {
                     View Market Analysis
                   </Button>
                 </div>
-              </div>
+                </CardContent>
+              </Card>
             )}
-          </CardContent>
-        </Card>
 
         {/* Navigation */}
         <div className="flex justify-between">

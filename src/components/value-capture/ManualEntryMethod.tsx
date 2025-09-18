@@ -72,7 +72,7 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
             placeholder="$1,022,400"
             value={propertyData.municipalValue ? formatCurrency(propertyData.municipalValue) : ''}
             onChange={(e) => handleCurrencyInput('municipalValue', e.target.value)}
-            className={`mt-1 ${validation.municipalValue && propertyData.municipalValue ? 'border-red-500 focus:ring-red-500' : ''}`}
+            className={`mt-1 transition-all ${validation.municipalValue && propertyData.municipalValue ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'focus:border-blue-500 focus:ring-blue-500/20'}`}
           />
           {validation.municipalValue && propertyData.municipalValue ? (
             <p className="text-xs text-red-500 mt-1">{validation.municipalValue}</p>
@@ -92,7 +92,7 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
             placeholder="$402,900"
             value={propertyData.landValue ? formatCurrency(propertyData.landValue) : ''}
             onChange={(e) => handleCurrencyInput('landValue', e.target.value)}
-            className="mt-1"
+            className="mt-1 transition-all focus:border-blue-500 focus:ring-blue-500/20"
           />
           <p className="text-xs text-gray-500 mt-1">Land value only</p>
         </div>
@@ -109,7 +109,7 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
             value={propertyData.yearBuilt}
             onChange={(e) => handleYearInput(e.target.value)}
             maxLength={4}
-            className={`mt-1 ${validation.yearBuilt && propertyData.yearBuilt ? 'border-red-500 focus:ring-red-500' : ''}`}
+            className={`mt-1 transition-all ${validation.yearBuilt && propertyData.yearBuilt ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'focus:border-blue-500 focus:ring-blue-500/20'}`}
           />
           {validation.yearBuilt && propertyData.yearBuilt ? (
             <p className="text-xs text-red-500 mt-1">{validation.yearBuilt}</p>
@@ -130,7 +130,7 @@ export default function ManualEntryMethod({ propertyData, onInputChange }: Manua
               placeholder="5,200"
               value={propertyData.lotSize ? parseInt(propertyData.lotSize).toLocaleString() : ''}
               onChange={(e) => handleLotSizeInput(e.target.value)}
-              className={`mt-1 pr-12 ${validation.lotSize && propertyData.lotSize ? 'border-red-500 focus:ring-red-500' : ''}`}
+              className={`mt-1 pr-12 transition-all ${validation.lotSize && propertyData.lotSize ? 'border-red-500 focus:border-red-500 focus:ring-red-500/20' : 'focus:border-blue-500 focus:ring-blue-500/20'}`}
             />
             <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-gray-500 mt-1">
               sq ft

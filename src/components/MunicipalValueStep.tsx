@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { FileText, FileUp, Edit, Copy, AlertCircle } from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PDFUploadMethod from "@/components/value-capture/PDFUploadMethod";
 import ManualEntryMethod from "@/components/value-capture/ManualEntryMethod";
 import CopyPasteMethod from "@/components/value-capture/CopyPasteMethod";
@@ -24,83 +26,70 @@ export default function MunicipalValueStep({ propertyData, onInputChange }: Muni
   const hasErrors = !isValid && propertyData.municipalValue !== "";
 
   return (
-    <div className="space-y-6">
-      <div className="text-center">
-        <FileText className="h-12 w-12 text-green-600 mx-auto mb-4" />
+    <Card className="shadow-lg border-gray-200">
+      <CardHeader className="text-center pb-6">
+        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <FileText className="h-8 w-8 text-green-600" />
+        </div>
         <h2 className="text-2xl font-semibold mb-2">Municipal Property Assessment</h2>
         <p className="text-gray-600">
           Upload your Montreal.ca assessment PDF or enter values manually
         </p>
-      </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
 
-      {/* Method Selection */}
-      <div className="flex gap-4 justify-center">
-        <button
-          onClick={() => setCaptureMethod("pdf")}
-          className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
-            captureMethod === "pdf" 
-              ? "bg-blue-600 text-white" 
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
-        >
-          <FileUp className="h-4 w-4" />
-          PDF Upload
-        </button>
-        <button
-          onClick={() => setCaptureMethod("manual")}
-          className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
-            captureMethod === "manual" 
-              ? "bg-blue-600 text-white" 
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
-        >
-          <Edit className="h-4 w-4" />
-          Manual Entry
-        </button>
-        <button
-          onClick={() => setCaptureMethod("paste")}
-          className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
-            captureMethod === "paste" 
-              ? "bg-blue-600 text-white" 
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
-        >
-          <Copy className="h-4 w-4" />
-          Copy/Paste
-        </button>
-      </div>
+        <Tabs value={captureMethod} onValueChange={(value) => setCaptureMethod(value as "pdf" | "manual" | "paste")} className="w-full">
+          <TabsList className="grid w-full grid-cols-3 mb-6">
+            <TabsTrigger value="pdf" className="flex items-center gap-2">
+              <FileUp className="h-4 w-4" />
+              PDF Upload
+            </TabsTrigger>
+            <TabsTrigger value="manual" className="flex items-center gap-2">
+              <Edit className="h-4 w-4" />
+              Manual Entry
+            </TabsTrigger>
+            <TabsTrigger value="paste" className="flex items-center gap-2">
+              <Copy className="h-4 w-4" />
+              Copy & Paste
+            </TabsTrigger>
+          </TabsList>
 
-      {/* Content based on method */}
-      <div className="bg-gray-50 p-6 rounded-lg">
-        {captureMethod === "pdf" && (
-          <PDFUploadMethod 
-            propertyAddress={propertyData.address}
-            onDataExtracted={(data) => {
-              onInputChange("municipalValue", data.municipalValue);
-              onInputChange("landValue", data.landValue);
-              onInputChange("lotSize", data.lotSize);
-              onInputChange("yearBuilt", data.yearBuilt);
-            }}
-          />
-        )}
+          <TabsContent value="pdf" className="mt-0 data-[state=active]:animate-in data-[state=inactive]:animate-out data-[state=active]:fade-in-0 data-[state=inactive]:fade-out-0">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <PDFUploadMethod 
+                propertyAddress={propertyData.address}
+                propertyData={propertyData}
+                onDataExtracted={(data) => {
+                  onInputChange("municipalValue", data.municipalValue);
+                  onInputChange("landValue", data.landValue);
+                  onInputChange("lotSize", data.lotSize);
+                  onInputChange("yearBuilt", data.yearBuilt);
+                }}
+              />
+            </div>
+          </TabsContent>
 
-        {captureMethod === "manual" && (
-          <ManualEntryMethod 
-            propertyData={propertyData}
-            onInputChange={onInputChange}
-          />
-        )}
+          <TabsContent value="manual" className="mt-0 data-[state=active]:animate-in data-[state=inactive]:animate-out data-[state=active]:fade-in-0 data-[state=inactive]:fade-out-0">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <ManualEntryMethod 
+                propertyData={propertyData}
+                onInputChange={onInputChange}
+              />
+            </div>
+          </TabsContent>
 
-        {captureMethod === "paste" && (
-          <CopyPasteMethod 
-            propertyData={propertyData}
-            onInputChange={onInputChange}
-          />
-        )}
-      </div>
+          <TabsContent value="paste" className="mt-0 data-[state=active]:animate-in data-[state=inactive]:animate-out data-[state=active]:fade-in-0 data-[state=inactive]:fade-out-0">
+            <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+              <CopyPasteMethod 
+                propertyData={propertyData}
+                onInputChange={onInputChange}
+              />
+            </div>
+          </TabsContent>
+        </Tabs>
 
-      {/* Validation Errors */}
-      {hasErrors && (
+        {/* Validation Errors */}
+        {hasErrors && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
           <div className="flex items-start gap-3">
             <AlertCircle className="h-5 w-5 text-red-600 mt-0.5 flex-shrink-0" />
@@ -120,6 +109,7 @@ export default function MunicipalValueStep({ propertyData, onInputChange }: Muni
         </div>
       )}
 
-    </div>
+      </CardContent>
+    </Card>
   );
 }
